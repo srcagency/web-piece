@@ -1,0 +1,30 @@
+{
+	"name": "web-piece",
+	"private": true,
+	"version": "0.0.1",
+	"description": "Decorator for a piece of the web in need of rendering",
+	"main": "index.js",
+	"keywords": [
+		"web",
+		"html",
+		"view",
+		"template",
+		"render"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://bitbucket.org/tjconcept/js-web-piece.git"
+	},
+	"author": {
+		"name": "Thomas Jensen",
+		"email": "thomas@tjconcept.dk",
+		"url": "http://tjconcept.dk"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"extend": "~1.2.1",
+		"bluebird": "~1.2.4",
+		"debug": "~0.8.1",
+		"html-me": "git+ssh://git@bitbucket.com:tjconcept/js-html-me.git"
+	}
+}
