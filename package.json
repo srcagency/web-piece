@@ -13,7 +13,7 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://bitbucket.org/tjconcept/js-web-piece.git"
+		"url": "https://bitbucket.org/src-agency/js-web-piece.git"
 	},
 	"author": {
 		"name": "Thomas Jensen",
@@ -24,7 +24,7 @@
 	"dependencies": {
 		"extend": "~1.2.1",
 		"bluebird": "~1.2.4",
-		"debug": "~0.8.1",
-		"html-me": "git+ssh://git@bitbucket.com:tjconcept/js-html-me.git"
+		"debug": "~1.0.0",
+		"html-me": "git+ssh://git@bitbucket.com:src-agency/js-html-me.git"
 	}
 }
