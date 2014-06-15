@@ -24,7 +24,7 @@
 	"dependencies": {
 		"extend": "~1.2.1",
 		"bluebird": "~1.2.4",
-		"debug": "~1.0.0",
+		"debug": "~1.0.2",
 		"html-me": "git+ssh://git@bitbucket.com:src-agency/js-html-me.git"
 	}
 }

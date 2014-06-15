@@ -24,7 +24,7 @@ module.exports = {
 	},
 
 	init: function ( config ) {
-		debug('%s.init with config %j', this.constructor.name, config);
+		debug('%s.init with config %o', this.constructor.name, config);
 
 		this.config = config || {};
 
