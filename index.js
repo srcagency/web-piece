@@ -12,15 +12,17 @@ module.exports = {
 	decorate: function ( ctor, config ) {
 		debug('%s.decorate', ctor.name);
 
-		ctor.config = config || {};
 		util.inherits(ctor, events.EventEmitter);
 
+		ctor.config = config = config || {};
 
 		ctor.template = config.template;
 		ctor.nodes = config.nodes;
 		ctor.hooks = config.hooks;
 
 		extend(ctor.prototype, protos);
+
+		return ctor;
 	},
 
 	init: function ( config ) {
