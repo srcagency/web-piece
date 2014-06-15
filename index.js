@@ -73,22 +73,16 @@ module.exports = {
 
 var protos = {
 
-	addClass: function ( className ) {
-		html.addClass(this.$, className);
-	},
-
-	removeClass: function ( className ) {
-		html.addClass(this.$, className);
-	},
-
 	render: function () {
 		debug('%s.render (live: %s)', this.constructor.name, this.live);
 
-		var data = this.beforeRender && this.beforeRender() || this.model;
+		var data = this.model;
+		var beforeRender = this.beforeRender && this.beforeRender();
 
 		if (!this.live)
 			return Promise.props(data)
 				.bind(this)
+				.tap(beforeRender)
 				.then(this.renderSync);
 
 		var keys = Object.keys(data);
@@ -118,22 +112,37 @@ var protos = {
 			}
 		}
 
-		debug('%s.render pending keys: %j', this.constructor.name, rendering.pending.keys);
+		debug('%s.render pending keys: %o', this.constructor.name, this.rendering.pending.keys);
 
-		this.renderSync(rendering.resolved, rendering.original);
+		this.renderSync(this.rendering.resolved, this.rendering);
 
-		return Promise.map(pending.values, this.renderProgress);
+		return Promise
+			.resolve(pending.values)
+			.bind(this)
+			.map(this.renderProgress)
+			.tap(beforeRender);
 	},
 
 	renderProgress: function ( resolvedValue, idx ) {
-		debug('%s.renderProgress resolved idx: %d', this.constructor.name, idx);
 		var rendering = this.rendering;
-		rendering.resolved[rendering.pending.keys[idx]] = resolvedValue;
-		this.renderSync(rendering.resolved, rendering.original);
+		var key = rendering.pending.keys[idx];
+
+		debug('%s.renderProgress resolved key: %s', this.constructor.name, key);
+
+		rendering.resolved[key] = resolvedValue;
+		this.renderSync(rendering.resolved, rendering);
 	},
 
-	renderSync: function ( resolved, original ) {
+	renderSync: function ( resolved, rendering ) {
 		// no-op, do overwrite
+	},
+
+	addClass: function ( className ) {
+		html.addClass(this.$, className);
+	},
+
+	removeClass: function ( className ) {
+		html.removeClass(this.$, className);
 	},
 
 };
