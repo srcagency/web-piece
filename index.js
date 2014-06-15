@@ -1,5 +1,7 @@
 'use strict';
 
+var util = require('util');
+var events = require('events');
 var extend = require('extend');
 var Promise = require('bluebird');
 var html = require('html-me');
@@ -11,6 +13,8 @@ module.exports = {
 		debug('%s.decorate', ctor.name);
 
 		ctor.config = config || {};
+		util.inherits(ctor, events.EventEmitter);
+
 
 		ctor.template = config.template;
 		ctor.nodes = config.nodes;
