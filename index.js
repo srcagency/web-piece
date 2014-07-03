@@ -26,6 +26,8 @@ module.exports = {
 	},
 
 	init: function ( config ) {
+		var ctor = this.constructor;
+
 		debug('%s.init with config %o', this.constructor.name, config);
 
 		this.config = config || {};
@@ -33,30 +35,19 @@ module.exports = {
 		this.model = this.model || config.model || {};
 		this.live = this.live === undefined ? !!config.live : this.live;
 
-		if (config.$) {
-			this.$ = config.$;
-		} else if (this.constructor.template) {
-			var parsed = html.parseString(this.constructor.template, { multiple: true });
+		this.$ = config.$ || ctor.template && html.parseString(ctor.template, { single: true }) || html.create('fragment');
 
-			if (parsed.length > 1)
-				this.$ = html.appendChildren(html.create('fragment'), parsed);
-			else
-				this.$ = parsed[0];
-		} else {
-			this.$ = html.create('fragment');
-		}
-
-		var nodes = this.constructor.nodes;
+		var nodes = ctor.nodes;
 
 		if (nodes) {
-			nodes = Object.keys(this.constructor.nodes);
+			nodes = Object.keys(ctor.nodes);
 
 			for (var node, i = 0;node = nodes[i++];)
-				this['$' + node] = html.findOne(this.constructor.nodes[node], this.$);
+				this['$' + node] = html.findOne(ctor.nodes[node], this.$);
 		}
 
 		if (this.live) {
-			var hooks = this.constructor.hooks;
+			var hooks = ctor.hooks;
 
 			if (hooks)
 				for (var hook, u = 0;hook = hooks[u++];)
