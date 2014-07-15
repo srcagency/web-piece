@@ -35,7 +35,7 @@ module.exports = {
 		this.model = this.model || config.model || {};
 		this.live = this.live === undefined ? !!config.live : this.live;
 
-		this.$ = config.$ || ctor.template && html.parseString(ctor.template, { single: true }) || html.create('fragment');
+		this.$ = config.$ || ctor.template && html.parseString(ctor.template, { single: true }) || html.create('div');
 
 		var nodes = ctor.nodes;
 
