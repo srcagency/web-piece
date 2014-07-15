@@ -51,6 +51,9 @@ module.exports = {
 				attach.apply(this, hook);
 	},
 
+	pluckNode: function( v ){ return v.$; },
+	invokeRender: function( v ){ return v.render(); },
+
 };
 
 var protos = {
