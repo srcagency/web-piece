@@ -46,19 +46,10 @@ module.exports = {
 				this['$' + node] = html.findOne(ctor.nodes[node], this.$);
 		}
 
-		if (this.live) {
-			var hooks = ctor.hooks;
-
-			if (hooks)
-				for (var hook, u = 0;hook = hooks[u++];)
-					html.addEventListener(
-						hook[2] ? this['$' + hook[2]] : this.$,
-						hook[0],
-						(typeof hook[1] === 'function' ? hook[1] : this[hook[1]]).bind(this)
-					);
-
-		}
-	}
+		if (this.live && ctor.hooks)
+			for (var hook, u = 0;hook = ctor.hooks[u++];)
+				attach.apply(this, hook);
+	},
 
 };
 
@@ -137,3 +128,20 @@ var protos = {
 	},
 
 };
+
+function attach( event, fn, nodeName, selector ){
+	var node = this['$' + (nodeName || '')];
+	var receiver = (typeof fn === 'function' ? fn : this[fn]);
+
+	if (selector)
+		var listener = function( e ){
+			var closest = html.closest(e.target, selector, node);
+
+			if (closest)
+				receiver.call(this, e, closest);
+		};
+	else
+		var listener = receiver;
+
+	html.addEventListener(node, event, listener.bind(this));
+}
