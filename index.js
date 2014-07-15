@@ -102,7 +102,8 @@ var protos = {
 			.resolve(pending.values)
 			.bind(this)
 			.map(this.renderProgress)
-			.tap(beforeRender);
+			.tap(beforeRender)
+			.tap(this.afterRender);
 	},
 
 	renderProgress: function ( resolvedValue, idx ) {
