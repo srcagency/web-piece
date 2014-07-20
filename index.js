@@ -72,7 +72,8 @@ var protos = {
 			return Promise.props(data)
 				.bind(this)
 				.then(this.renderSync)
-				.tap(beforeRender);
+				.tap(beforeRender)
+				.tap(this.afterRender);
 
 		var keys = Object.keys(data);
 		var resolved = {};
