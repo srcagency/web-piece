@@ -104,11 +104,10 @@ var protos = {
 
 		debug('%s.render pending keys: %o', this.constructor.name, this.rendering.pending.keys);
 
-		this.renderSync(this.rendering.resolved, this.rendering);
-
 		return Promise
-			.resolve(pending.values)
 			.bind(this)
+			.tap(this.renderProgress)
+			.return(pending.values)
 			.map(this.renderProgress)
 			.tap(beforeRender)
 			.tap(this.afterRender);
@@ -116,11 +115,15 @@ var protos = {
 
 	renderProgress: function ( resolvedValue, idx ) {
 		var rendering = this.rendering;
-		var key = rendering.pending.keys[idx];
 
-		debug('%s.renderProgress resolved key: %s', this.constructor.name, key);
+		if (idx !== undefined) {
+			var key = rendering.pending.keys[idx];
 
-		rendering.resolved[key] = resolvedValue;
+			debug('%s.renderProgress resolved key: %s', this.constructor.name, key);
+
+			rendering.resolved[key] = resolvedValue;
+		}
+
 		this.renderSync(rendering.resolved, rendering);
 	},
 
