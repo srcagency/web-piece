@@ -42,8 +42,12 @@ module.exports = {
 		if (nodes) {
 			nodes = Object.keys(ctor.nodes);
 
-			for (var node, i = 0;node = nodes[i++];)
+			for (var node, i = 0;node = nodes[i++];) {
 				this['$' + node] = html.findOne(ctor.nodes[node], this.$);
+
+				if (!this['$' + node])
+					throw new Error(this.constructor.name + '.$' + node + ': unmatched selector "' + ctor.nodes[node] + '"');
+			}
 		}
 
 		if (this.live && ctor.hooks)
