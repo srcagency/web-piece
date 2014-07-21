@@ -1,7 +1,7 @@
 {
 	"name": "web-piece",
 	"private": true,
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Decorator for a piece of the web in need of rendering",
 	"main": "index.js",
 	"keywords": [
