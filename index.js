@@ -90,13 +90,11 @@ var protos = {
 		for (var key, value, i = 0;key = keys[i++];) {
 			value = data[key];
 
-			if (Promise.is(value)) {
-				if (value.isFulfilled()) {
-					resolved[key] = value.value();
-				} else {
-					pending.keys.push(key);
-					pending.values.push(value);
-				}
+			if (value.isPending && value.isPending()) {
+				pending.keys.push(key);
+				pending.values.push(value);
+			} else if (value.value) {
+				resolved[key] = value.value();
 			} else {
 				resolved[key] = value;
 			}
