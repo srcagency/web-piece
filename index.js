@@ -6,6 +6,7 @@ var extend = require('extend');
 var Promise = require('bluebird');
 var html = require('html-me');
 var debug = require('debug')('web-piece');
+var pluckKeyValues = require('pluck-key-values');
 
 module.exports = {
 
@@ -19,6 +20,8 @@ module.exports = {
 		ctor.template = config.template;
 		ctor.nodes = config.nodes;
 		ctor.hooks = config.hooks;
+		ctor.binds = config.binds || [];
+		ctor.bindFns = Object.keys(ctor.binds);
 
 		extend(ctor.prototype, protos);
 
@@ -65,68 +68,21 @@ var protos = {
 	render: function () {
 		debug('%s.render (live: %s)', this.constructor.name, this.live);
 
-		var data = this.model;
+		var rendering = Promise.bind(this);
 		var beforeRender = this.beforeRender && this.beforeRender();
 
-		if (!this.live)
-			return Promise.props(data)
-				.bind(this)
-				.then(this.renderSync)
-				.tap(beforeRender)
-				.tap(this.afterRender);
+		var binds = this.constructor.binds;
+		var bindFns = this.constructor.bindFns;
 
-		var keys = Object.keys(data);
-		var resolved = {};
-		var pending = {
-			keys: [],
-			values: [],
-		};
-		this.rendering = {
-			original: data,
-			resolved: resolved,
-			pending: pending,
-		};
+		for (var i = bindFns.length - 1;i >= 0;i--)
+			rendering = rendering
+				.return(pluckKeyValues(this.model, binds[bindFns[i]]))
+				.spread(this[bindFns[i]]);
 
-		for (var key, value, i = 0;key = keys[i++];) {
-			value = data[key];
+		if (this.renderSync)
+			rendering = rendering.tap(Promise.props(this.model).bind(this).tap(this.renderSync));
 
-			if (value.isPending && value.isPending()) {
-				pending.keys.push(key);
-				pending.values.push(value);
-			} else if (value.value) {
-				resolved[key] = value.value();
-			} else {
-				resolved[key] = value;
-			}
-		}
-
-		debug('%s.render pending keys: %o', this.constructor.name, this.rendering.pending.keys);
-
-		return Promise
-			.bind(this)
-			.tap(this.renderProgress)
-			.return(pending.values)
-			.map(this.renderProgress)
-			.tap(beforeRender)
-			.tap(this.afterRender);
-	},
-
-	renderProgress: function ( resolvedValue, idx ) {
-		var rendering = this.rendering;
-
-		if (idx !== undefined) {
-			var key = rendering.pending.keys[idx];
-
-			debug('%s.renderProgress resolved key: %s', this.constructor.name, key);
-
-			rendering.resolved[key] = resolvedValue;
-		}
-
-		this.renderSync(rendering.resolved, rendering);
-	},
-
-	renderSync: function ( resolved, rendering ) {
-		// no-op, do overwrite
+		return rendering.tap(beforeRender).tap(this.afterRender);
 	},
 
 	addClass: function ( className ) {
