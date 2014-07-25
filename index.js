@@ -36,8 +36,6 @@ module.exports = {
 		this.config = config || {};
 
 		this.model = this.model || config.model || {};
-		this.live = this.live === undefined ? !!config.live : this.live;
-
 		this.$ = config.$ || ctor.template && html.parseString(ctor.template, { single: true }) || html.create('div');
 
 		var nodes = ctor.nodes;
@@ -53,7 +51,7 @@ module.exports = {
 			}
 		}
 
-		if (this.live && ctor.hooks)
+		if (ctor.hooks)
 			for (var hook, u = 0;hook = ctor.hooks[u++];)
 				attach.apply(this, hook);
 	},
@@ -66,7 +64,7 @@ module.exports = {
 var protos = {
 
 	render: function () {
-		debug('%s.render (live: %s)', this.constructor.name, this.live);
+		debug('%s.render', this.constructor.name);
 
 		var rendering = Promise.bind(this);
 		var beforeRender = this.beforeRender && this.beforeRender();
