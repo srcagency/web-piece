@@ -42,12 +42,8 @@ module.exports = {
 		if (nodes) {
 			nodes = Object.keys(ctor.nodes);
 
-			for (var node, i = 0;node = nodes[i++];) {
-				this['$' + node] = html.findOne(ctor.nodes[node], this.$);
-
-				if (!this['$' + node])
-					throw new Error(this.constructor.name + '.$' + node + ': unmatched selector "' + ctor.nodes[node] + '"');
-			}
+			for (var node, i = 0;node = nodes[i++];)
+				saveNode.call(this, '$' + node, ctor.nodes[node]);
 		}
 
 		if (ctor.hooks)
@@ -107,4 +103,11 @@ function attach( event, fn, nodeName, selector ){
 		var listener = receiver;
 
 	html.addEventListener(node, event, listener.bind(this));
+}
+
+function saveNode( name, selector ){
+	this[name] = html.findOne(selector, this.$);
+
+	if (!this[name])
+		throw new Error(this.constructor.name + '.$' + name + ': unmatched selector "' + selector + '"');
 }
