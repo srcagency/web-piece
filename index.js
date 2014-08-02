@@ -20,7 +20,7 @@ module.exports = {
 		ctor.template = config.template;
 		ctor.nodes = config.nodes;
 		ctor.hooks = config.hooks;
-		ctor.binds = config.binds || [];
+		ctor.binds = config.binds || {};
 		ctor.bindFns = Object.keys(ctor.binds);
 
 		extend(ctor.prototype, protos);
