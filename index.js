@@ -35,7 +35,11 @@ module.exports = {
 		debug('%s.init with config %o', this.constructor.name, config);
 
 		this.model = this.model || config.model || {};
-		this.$ = config.$ || ctor.template && html.parseString(ctor.template, { single: true }) || html.create('div');
+		this.$ =
+			this.$
+			|| config.$
+			|| (ctor.template && html.parseString(ctor.template, { single: true }))
+			|| html.create('div');
 
 		var nodes = ctor.nodes;
 
