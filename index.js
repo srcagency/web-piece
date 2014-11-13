@@ -96,17 +96,13 @@ function attach( event, fn, nodeNameOrSelector, selector ){
 	var node = this['$' + (nodeNameOrSelector || '')] || html.findOne(nodeNameOrSelector, this.$);
 	var receiver = (typeof fn === 'function' ? fn : this[fn]);
 
-	if (selector)
-		var listener = function( e ){
-			var closest = html.closest(e.target, selector, node);
+	if (!node)
+		throw new Error(this.constructor.name + '.' + name + ': unable to bind event "' + event + '" to missing node "' + nodeNameOrSelector + '"');
 
-			if (closest)
-				receiver.call(this, e, closest);
-		};
-	else
-		var listener = receiver;
+	if (!receiver)
+		throw new Error(this.constructor.name + '.' + name + ': no receiver "' + receiver + '" for event "' + event + '"');
 
-	html.addEventListener(node, event, listener.bind(this));
+	html.addEventListener(node, event, receiver.bind(this), selector);
 }
 
 function saveNode( name, selector ){
