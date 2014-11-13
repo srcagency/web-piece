@@ -109,5 +109,5 @@ function saveNode( name, selector ){
 	this[name] = html.findOne(selector, this.$);
 
 	if (!this[name])
-		throw new Error(this.constructor.name + '.$' + name + ': unmatched selector "' + selector + '"');
+		throw new Error(this.constructor.name + '.' + name + ': unmatched selector "' + selector + '"');
 }
