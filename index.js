@@ -82,15 +82,14 @@ var protos = {
 		return rendering.tap(beforeRender).tap(this.afterRender);
 	},
 
-	addClass: function ( className ) {
-		html.addClass(this.$, className);
-	},
-
-	removeClass: function ( className ) {
-		html.removeClass(this.$, className);
-	},
-
 };
+
+require('./inherited')
+	.forEach(function( fn ){
+		protos[fn] = function( a, b ){
+			return html[fn](this.$, a, b);
+		};
+	});
 
 function attach( event, fn, nodeNameOrSelector, selector ){
 	var node = this['$' + (nodeNameOrSelector || '')] || html.findOne(nodeNameOrSelector, this.$);
