@@ -1,6 +1,6 @@
 'use strict';
 
-var util = require('util');
+var inherits = require('inherits');
 var events = require('events');
 var extend = require('extend');
 var Promise = require('bluebird');
@@ -13,7 +13,7 @@ module.exports = {
 	decorate: function ( ctor, config ) {
 		debug('%s.decorate', ctor.name);
 
-		util.inherits(ctor, events.EventEmitter);
+		inherits(ctor, events.EventEmitter);
 
 		ctor.config = config = config || {};
 

@@ -26,6 +26,7 @@
 		"bluebird": "~2.3.11",
 		"debug": "~2.1.0",
 		"pluck-key-values": "^0.0.1",
+		"inherits": "^2.0.1",
 		"html-me": "git+ssh://git@bitbucket.com:src-agency/js-html-me.git"
 	}
 }
