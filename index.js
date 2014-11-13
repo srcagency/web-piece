@@ -92,8 +92,8 @@ var protos = {
 
 };
 
-function attach( event, fn, nodeName, selector ){
-	var node = this['$' + (nodeName || '')];
+function attach( event, fn, nodeNameOrSelector, selector ){
+	var node = this['$' + (nodeNameOrSelector || '')] || html.findOne(nodeNameOrSelector, this.$);
 	var receiver = (typeof fn === 'function' ? fn : this[fn]);
 
 	if (selector)
