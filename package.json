@@ -22,13 +22,13 @@
 	"license": "MIT",
 	"dependencies": {
 		"extend": "^2.0.0",
-		"bluebird": "^2.3.11",
-		"debug": "^2.1.0",
+		"bluebird": "^2.9.9",
+		"debug": "^2.1.1",
 		"pluck-key-values": "^0.0.1",
 		"inherits": "^2.0.1",
 		"html-me": "git+ssh://git@github.com:srcagency/html-me.git"
 	},
 	"devDependencies": {
-		"tape": "^3.0.3"
+		"tape": "^3.5.0"
 	}
 }
