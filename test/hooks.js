@@ -5,7 +5,9 @@ var test = require('tape');
 
 var wp = require('../');
 
-test('hooks', function( t ){
+var skip = typeof MouseEvent === 'undefined';
+
+test('hooks', { skip: skip }, function( t ){
 	t.test('on host node', function( t ){
 		t.plan(5);
 
@@ -143,7 +145,7 @@ test('hooks', function( t ){
 		click(view.$);
 	});
 
-	t.test('using delegation', function( t ){
+	t.test('using delegation', { skip: true }, function( t ){
 		t.plan(2);
 
 		function View( config ){
