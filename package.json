@@ -1,6 +1,6 @@
 {
 	"name": "web-piece",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "Decorator for a piece of the web in need of rendering",
 	"main": "src",
 	"testling": {
