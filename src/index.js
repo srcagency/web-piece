@@ -2,7 +2,7 @@
 
 var inherits = require('inherits');
 var events = require('events');
-var extend = require('extend');
+var assign = require('object-assign');
 var Promise = require('bluebird');
 var html = require('html-me');
 var debug = require('debug')('web-piece');
@@ -23,7 +23,7 @@ module.exports = {
 		ctor.binds = config.binds || {};
 		ctor.bindFns = Object.keys(ctor.binds);
 
-		extend(ctor.prototype, protos);
+		assign(ctor.prototype, protos);
 
 		return ctor;
 	},
